@@ -191,8 +191,12 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+    private int piari;
     public void test_variable_writing() {
-        // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        String log = sea + "," + land + "," + piari;
+        log(log);
     }
 
     // ===================================================================================
@@ -203,12 +207,20 @@ public class Step01VariableTest extends PlainTestCase {
      * (変数についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-     * your question here (ここにあなたの質問を):
-     *
+     * log の出力は何でしょうか？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
         // write your code here
+        String happyBirthday = "Happy Birthday to ";
+        String who = "Winki";
+        String result = helpYourExercise(happyBirthday, who);
+        log(result); // your answer? => Happy Birthday to Shin
+    }
+
+    private String helpYourExercise(String happyBirthday, String who) {
+        who = "Shin";
+        return happyBirthday + who;
     }
 }
