@@ -181,16 +181,18 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
+        List<String> filteredList = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        stageList.forEach(stage -> {
             if (stage.startsWith("br")) {
-                continue;
+                return;
             }
-            sea = stage;
+            filteredList.add(0, stage);
             if (stage.contains("ga")) {
-                break;
+                sb.append(filteredList.get(0));
             }
-        }
+        });
+        String sea = sb.toString();
         log(sea); // should be same as before-fix
     }
 
@@ -200,7 +202,7 @@ public class Step02IfForTest extends PlainTestCase {
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
      * your question here (ここにあなたの質問を):
-     * 
+     *
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
