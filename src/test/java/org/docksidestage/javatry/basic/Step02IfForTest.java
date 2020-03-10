@@ -201,13 +201,39 @@ public class Step02IfForTest extends PlainTestCase {
      * (if文for文についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-     * your question here (ここにあなたの質問を):
-     *
+     * 先頭が「R」以外、名が4文字以上の名前をfor文でリストに追加し、forEachでリストの中身を出力してください
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
         // write your code here
+        List<String> memberList = prepareMemberList();
+        List<String> filteredList = new ArrayList<>();
+        for (String member : memberList) {
+            if (member.startsWith("R")) {
+                continue;
+            }
+            int spaceIndex = member.indexOf(" ");
+            String firstName = member.substring(0, spaceIndex);
+            if (firstName.length() >= 4) {
+                filteredList.add(member);
+            }
+        }
+        filteredList.forEach(member -> {
+            log(member);
+        });
+    }
+
+    private List<String> prepareMemberList() {
+        List<String> memberList = new ArrayList<>();
+        memberList.add("Ai Takahashi");
+        memberList.add("Risa Niigaki");
+        memberList.add("Sayumi Michishige");
+        memberList.add("Reina Tanaka");
+        memberList.add("Riho Sayashi");
+        memberList.add("Mizuki Fukumura");
+        memberList.add("Chisaki Morito");
+        return memberList;
     }
 
     // ===================================================================================
