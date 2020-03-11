@@ -43,35 +43,43 @@ public class TicketBooth {
     //                                                                          Buy Ticket
     //                                                                          ==========
     public void buyOneDayPassport(int handedMoney) {
-        if (quantity <= 0) {
-            throw new TicketSoldOutException("Sold out");
-        }
-        if (handedMoney < ONE_DAY_PRICE) {
-            throw new TicketShortMoneyException("Short money: " + handedMoney);
-        }
-        if (salesProceeds != null) {
-            salesProceeds = salesProceeds + ONE_DAY_PRICE;
-        } else {
-            salesProceeds = ONE_DAY_PRICE;
-        }
-        --quantity;
+        buyPassport(handedMoney, ONE_DAY_PRICE, 1);
     }
 
     public int buyTwoDayPassport(int handedMoney) {
+        buyPassport(handedMoney, TWO_DAY_PRICE, 2);
+        return handedMoney - TWO_DAY_PRICE;
+    }
+
+    private void buyPassport(int handedMoney, int price, int salesQuantity) {
+        checkQuantity();
+        checkHandedMoney(handedMoney, price);
+        addSalesProceeds(price);
+        reduceQuantity(salesQuantity);
+    }
+
+    private void checkQuantity() {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        if (handedMoney < TWO_DAY_PRICE) {
+    }
+
+    private void checkHandedMoney(int handedMoney, int price) {
+        if (handedMoney < price) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
+    }
 
+    private void addSalesProceeds(int price) {
         if (salesProceeds != null) {
-            salesProceeds = salesProceeds + TWO_DAY_PRICE;
+            salesProceeds = salesProceeds + price;
         } else {
-            salesProceeds = TWO_DAY_PRICE;
+            salesProceeds = price;
         }
-        quantity = quantity - 2;
-        return handedMoney - TWO_DAY_PRICE;
+    }
+
+    private void reduceQuantity(int salesQuantity) {
+        quantity = quantity - salesQuantity;
     }
 
     public static class TicketSoldOutException extends RuntimeException {
