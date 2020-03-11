@@ -25,6 +25,7 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -54,6 +55,23 @@ public class TicketBooth {
             salesProceeds = ONE_DAY_PRICE;
         }
         --quantity;
+    }
+
+    public int buyTwoDayPassport(int handedMoney) {
+        if (quantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+        if (handedMoney < TWO_DAY_PRICE) {
+            throw new TicketShortMoneyException("Short money: " + handedMoney);
+        }
+
+        if (salesProceeds != null) {
+            salesProceeds = salesProceeds + TWO_DAY_PRICE;
+        } else {
+            salesProceeds = TWO_DAY_PRICE;
+        }
+        quantity = quantity - 2;
+        return handedMoney - TWO_DAY_PRICE;
     }
 
     public static class TicketSoldOutException extends RuntimeException {
