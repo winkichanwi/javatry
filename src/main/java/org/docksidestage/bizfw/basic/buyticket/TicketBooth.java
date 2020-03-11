@@ -43,21 +43,24 @@ public class TicketBooth {
     //                                                                          Buy Ticket
     //                                                                          ==========
     public Ticket buyOneDayPassport(int handedMoney) {
-        buyPassport(handedMoney, ONE_DAY_PRICE, 1);
-        Ticket ticket = new Ticket(ONE_DAY_PRICE);
+        Ticket ticket = buyPassport(handedMoney, ONE_DAY_PRICE, 1);
         return ticket;
     }
 
-    public int buyTwoDayPassport(int handedMoney) {
-        buyPassport(handedMoney, TWO_DAY_PRICE, 2);
-        return handedMoney - TWO_DAY_PRICE;
+    public TicketBuyResult buyTwoDayPassport(int handedMoney) {
+        int price = TWO_DAY_PRICE;
+        Ticket ticket = buyPassport(handedMoney, price, 2);
+        int change = handedMoney - price;
+        TicketBuyResult result = new TicketBuyResult(ticket, change);
+        return result;
     }
 
-    private void buyPassport(int handedMoney, int price, int salesQuantity) {
+    private Ticket buyPassport(int handedMoney, int price, int salesQuantity) {
         checkQuantity();
         checkHandedMoney(handedMoney, price);
         addSalesProceeds(price);
         reduceQuantity(salesQuantity);
+        return new Ticket(price);
     }
 
     private void checkQuantity() {
