@@ -38,7 +38,7 @@ public class MultipleDayTicket implements Ticket {
     }
 
     private String initTicketType() {
-        return remainCheckIn + "Day";
+        return remainCheckIn + "-Day";
     }
 
     // ===================================================================================

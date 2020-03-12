@@ -32,7 +32,7 @@ public class OneDayTicket implements Ticket {
     //                                                                         ===========
     public OneDayTicket(int displayPrice) {
         this.displayPrice = displayPrice;
-        this.ticketType = "1Day";
+        this.ticketType = "1-Day";
     }
 
     // ===================================================================================

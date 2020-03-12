@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 /**
  * @author jflute
+ * @author winkichanwi
  */
 public class TicketBooth {
 
@@ -26,6 +27,7 @@ public class TicketBooth {
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200;
+    private static final int FOUR_DAY_PRICE = 22400;
 
     // ===================================================================================
     //                                                                           Attribute
@@ -50,6 +52,14 @@ public class TicketBooth {
     public TicketBuyResult buyTwoDayPassport(int handedMoney) {
         int price = TWO_DAY_PRICE;
         Ticket ticket = buyPassport(handedMoney, price, 2);
+        int change = handedMoney - price;
+        TicketBuyResult result = new TicketBuyResult(ticket, change);
+        return result;
+    }
+
+    public TicketBuyResult buyFourDayPassport(int handedMoney) {
+        int price = FOUR_DAY_PRICE;
+        Ticket ticket = buyPassport(handedMoney, price, 4);
         int change = handedMoney - price;
         TicketBuyResult result = new TicketBuyResult(ticket, change);
         return result;
