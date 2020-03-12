@@ -44,38 +44,35 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Buy Ticket
     //                                                                          ==========
-    public Ticket buyOneDayPassport(int handedMoney) {
-        Ticket ticket = buyPassport(handedMoney, ONE_DAY_PRICE, 1);
-        return ticket;
+    public TicketBuyResult buyOneDayPassport(int handedMoney) {
+        TicketBuyResult result = buyPassport(handedMoney, ONE_DAY_PRICE, 1);
+        return result;
     }
 
     public TicketBuyResult buyTwoDayPassport(int handedMoney) {
-        int price = TWO_DAY_PRICE;
-        Ticket ticket = buyPassport(handedMoney, price, 2);
-        int change = handedMoney - price;
-        TicketBuyResult result = new TicketBuyResult(ticket, change);
+        TicketBuyResult result = buyPassport(handedMoney, TWO_DAY_PRICE, 2);
         return result;
     }
 
     public TicketBuyResult buyFourDayPassport(int handedMoney) {
-        int price = FOUR_DAY_PRICE;
-        Ticket ticket = buyPassport(handedMoney, price, 4);
-        int change = handedMoney - price;
-        TicketBuyResult result = new TicketBuyResult(ticket, change);
+        TicketBuyResult result = buyPassport(handedMoney, FOUR_DAY_PRICE, 4);
         return result;
     }
 
-    private Ticket buyPassport(int handedMoney, int price, int salesQuantity) {
+    private TicketBuyResult buyPassport(int handedMoney, int price, int salesQuantity) {
         checkQuantity();
         checkHandedMoney(handedMoney, price);
         addSalesProceeds(price);
         reduceQuantity(salesQuantity);
 
+        Ticket ticket;
         if (salesQuantity == 1) {
-            return new OneDayTicket(price);
+            ticket = new OneDayTicket(price);
         } else {
-            return new MultipleDayTicket(price, salesQuantity);
+            ticket =  new MultipleDayTicket(price, salesQuantity);
         }
+        int change = handedMoney - price;
+        return new TicketBuyResult(ticket, change);
     }
 
     private void checkQuantity() {

@@ -134,7 +134,7 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_return_ticket() {
         TicketBooth booth = new TicketBooth();
-        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000).getTicket();
         log(oneDayPassport.getDisplayPrice()); // should be same as one-day price
         log(oneDayPassport.isAlreadyIn()); // should be false
         oneDayPassport.doInPark();
@@ -160,7 +160,7 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_type() {
         TicketBooth booth = new TicketBooth();
-        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000).getTicket();
         log(oneDayPassport.getTicketType());
 
         TicketBuyResult twoDayPassportResult = booth.buyTwoDayPassport(20000);
@@ -189,7 +189,7 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_useInterface() {
         TicketBooth booth = new TicketBooth();
-        Ticket oneDayPassport = booth.buyOneDayPassport(10000);
+        Ticket oneDayPassport = booth.buyOneDayPassport(10000).getTicket();
         oneDayPassport.doInPark();
         log(oneDayPassport.getRemainCheckIn());
 
@@ -219,6 +219,16 @@ public class Step05ClassTest extends PlainTestCase {
      * (その他、気になるところがあったらリファクタリングしてみましょう (例えば、バランスの良いメソッド名や変数名になっていますか？))
      */
     public void test_class_moreFix_yourRefactoring() {
-        // write confirmation code here
+        TicketBooth booth = new TicketBooth();
+        TicketBuyResult fourDayPassportResult = booth.buyFourDayPassport(22400);
+        Ticket fourDayPassport = fourDayPassportResult.getTicket();
+        log(fourDayPassport.getTicketType());
+        int change = fourDayPassportResult.getChange();
+        log(change);
+        fourDayPassport.doInPark();
+        log(fourDayPassport.getRemainCheckIn());
+        fourDayPassport.leavePark();
+        fourDayPassport.doInPark();
+        log(fourDayPassport.getRemainCheckIn());
     }
 }

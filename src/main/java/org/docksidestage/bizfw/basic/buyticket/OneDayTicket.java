@@ -45,6 +45,9 @@ public class OneDayTicket implements Ticket {
         alreadyIn = true;
     }
 
+    public void leavePark() {
+    }
+
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========

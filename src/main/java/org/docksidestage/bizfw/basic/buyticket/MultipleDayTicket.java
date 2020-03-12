@@ -31,10 +31,20 @@ public class MultipleDayTicket implements Ticket {
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public MultipleDayTicket(int displayPrice, int maxCheckIn) {
-        this.remainCheckIn = maxCheckIn;
+    public MultipleDayTicket(int displayPrice, int day) {
+        this.remainCheckIn = initRemainCheckIn(day);
         this.displayPrice = displayPrice;
         this.ticketType = initTicketType();
+    }
+
+    private int initRemainCheckIn(int day) {
+        if (day < 2) {
+            throw new IllegalArgumentException("Expect value for more than 1-day passport");
+        } else if (day == 2) {
+            return 1;
+        } else {
+            return day;
+        }
     }
 
     private String initTicketType() {
