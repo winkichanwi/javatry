@@ -19,56 +19,10 @@ package org.docksidestage.bizfw.basic.buyticket;
  * @author jflute
  * @author winkichanwi
  */
-public class Ticket {
-
-    // ===================================================================================
-    //                                                                           Attribute
-    //                                                                           =========
-    private final int displayPrice;
-    private final String ticketType;
-    private boolean alreadyIn;
-
-    private static final int ONE_DAY_PRICE = 7400;
-    private static final int TWO_DAY_PRICE = 13200;
-
-    // ===================================================================================
-    //                                                                         Constructor
-    //                                                                         ===========
-    public Ticket(int displayPrice) {
-        this.displayPrice = displayPrice;
-        this.ticketType = initTicketType();
-    }
-
-    private String initTicketType() {
-        if (displayPrice == ONE_DAY_PRICE) {
-            return "OneDay";
-        } else if (displayPrice == TWO_DAY_PRICE) {
-            return "TwoDay";
-        } return "UNKNOWN";
-    }
-
-    // ===================================================================================
-    //                                                                             In Park
-    //                                                                             =======
-    public void doInPark() {
-        if (alreadyIn) {
-            throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
-        }
-        alreadyIn = true;
-    }
-
-    // ===================================================================================
-    //                                                                            Accessor
-    //                                                                            ========
-    public int getDisplayPrice() {
-        return displayPrice;
-    }
-
-    public String getTicketType() {
-        return ticketType;
-    }
-
-    public boolean isAlreadyIn() {
-        return alreadyIn;
-    }
+public interface Ticket {
+    void doInPark();
+    int getDisplayPrice();
+    boolean isAlreadyIn();
+    int getRemainCheckIn();
+    String getTicketType();
 }

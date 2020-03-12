@@ -60,7 +60,12 @@ public class TicketBooth {
         checkHandedMoney(handedMoney, price);
         addSalesProceeds(price);
         reduceQuantity(salesQuantity);
-        return new Ticket(price);
+
+        if (salesQuantity == 1) {
+            return new OneDayTicket(price);
+        } else {
+            return new MultipleDayTicket(price, salesQuantity);
+        }
     }
 
     private void checkQuantity() {
