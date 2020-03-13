@@ -23,43 +23,26 @@ public class MultipleDayTicket implements Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private final int displayPrice;
-    private final String ticketType;
+    private final TicketType ticketType;
     private int remainCheckIn;
     private boolean alreadyIn;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public MultipleDayTicket(int displayPrice, int day) {
-        this.remainCheckIn = initRemainCheckIn(day);
-        this.displayPrice = displayPrice;
-        this.ticketType = initTicketType();
+    public MultipleDayTicket(TicketType ticketType) {
+        this.ticketType = ticketType;
+        this.remainCheckIn = ticketType.getCheckInLimit();
     }
-
-    private int initRemainCheckIn(int day) {
-        if (day < 2) {
-            throw new IllegalArgumentException("Expect value for more than 1-day passport");
-        } else if (day == 2) {
-            return 1;
-        } else {
-            return day;
-        }
-    }
-
-    private String initTicketType() {
-        return remainCheckIn + "-Day";
-    }
-
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
     public void doInPark() {
         if (remainCheckIn == 0) {
-            throw new IllegalStateException("Check-in time has been used up already: displayedPrice=" + displayPrice);
+            throw new IllegalStateException("Check-in time has been used up already: ticketType=" + ticketType.name());
         }
         if (alreadyIn) {
-            throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
+            throw new IllegalStateException("Already in park by this ticket: ticketType=" + ticketType.name());
         }
         remainCheckIn--;
         alreadyIn = true;
@@ -71,7 +54,7 @@ public class MultipleDayTicket implements Ticket {
 
     public void leavePark() {
         if (!alreadyIn) {
-            throw new IllegalStateException("Already left park by this ticket: displayedPrice=" + displayPrice);
+            throw new IllegalStateException("Already left park by this ticket: ticketType=" + ticketType.name());
         }
         alreadyIn = false;
     }
@@ -80,12 +63,18 @@ public class MultipleDayTicket implements Ticket {
     //                                                                            Accessor
     //                                                                            ========
     public int getDisplayPrice() {
-        return displayPrice;
+        return ticketType.getPrice();
     }
 
-    public boolean isAlreadyIn() { return alreadyIn; }
+    public boolean isAlreadyIn() {
+        return alreadyIn;
+    }
 
-    public int getRemainCheckIn() { return remainCheckIn; }
+    public int getRemainCheckIn() {
+        return remainCheckIn;
+    }
 
-    public String getTicketType() { return ticketType; }
+    public String getTicketType() {
+        return ticketType.name();
+    }
 }

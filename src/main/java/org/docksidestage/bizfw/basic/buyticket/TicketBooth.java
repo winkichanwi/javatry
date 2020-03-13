@@ -15,6 +15,9 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author jflute
  * @author winkichanwi
@@ -24,79 +27,87 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
-    private static final int MAX_QUANTITY = 10;
-    private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
-    private static final int TWO_DAY_PRICE = 13200;
-    private static final int FOUR_DAY_PRICE = 22400;
+    private static final int ONE_DAY_MAX_QUANTITY = 10;
+    private static final int TWO_DAY_MAX_QUANTITY = 10;
+    private static final int FOUR_DAY_MAX_QUANTITY = 10;
+    private static Map<TicketType, Integer> ticketStock = new HashMap<>();
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private int quantity = MAX_QUANTITY;
     private Integer salesProceeds;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
     public TicketBooth() {
+        initStock();
+    }
+
+    private void initStock() {
+        ticketStock.put(TicketType.ONE_DAY_TICKET, ONE_DAY_MAX_QUANTITY);
+        ticketStock.put(TicketType.TWO_DAY_TICKET, TWO_DAY_MAX_QUANTITY);
+        ticketStock.put(TicketType.FOUR_DAY_TICKET, FOUR_DAY_MAX_QUANTITY);
     }
 
     // ===================================================================================
     //                                                                          Buy Ticket
     //                                                                          ==========
     public TicketBuyResult buyOneDayPassport(int handedMoney) {
-        TicketBuyResult result = buyPassport(handedMoney, ONE_DAY_PRICE, 1);
+        TicketBuyResult result = buyPassport(handedMoney, TicketType.ONE_DAY_TICKET);
         return result;
     }
 
     public TicketBuyResult buyTwoDayPassport(int handedMoney) {
-        TicketBuyResult result = buyPassport(handedMoney, TWO_DAY_PRICE, 2);
+        TicketBuyResult result = buyPassport(handedMoney, TicketType.TWO_DAY_TICKET);
         return result;
     }
 
     public TicketBuyResult buyFourDayPassport(int handedMoney) {
-        TicketBuyResult result = buyPassport(handedMoney, FOUR_DAY_PRICE, 4);
+        TicketBuyResult result = buyPassport(handedMoney, TicketType.FOUR_DAY_TICKET);
         return result;
     }
 
-    private TicketBuyResult buyPassport(int handedMoney, int price, int salesQuantity) {
-        checkQuantity();
-        checkHandedMoney(handedMoney, price);
-        addSalesProceeds(price);
-        reduceQuantity(salesQuantity);
+    private TicketBuyResult buyPassport(int handedMoney, TicketType ticketType) {
+        checkQuantity(ticketType);
+        checkHandedMoney(handedMoney, ticketType);
+        addSalesProceeds(ticketType);
+        reduceQuantity(ticketType);
 
         Ticket ticket;
-        if (salesQuantity == 1) {
-            ticket = new OneDayTicket(price);
+        if (ticketType == TicketType.ONE_DAY_TICKET) {
+            ticket = new OneDayTicket();
         } else {
-            ticket =  new MultipleDayTicket(price, salesQuantity);
+            ticket = new MultipleDayTicket(ticketType);
         }
-        int change = handedMoney - price;
+        int change = handedMoney - ticketType.getPrice();
         return new TicketBuyResult(ticket, change);
     }
 
-    private void checkQuantity() {
-        if (quantity <= 0) {
-            throw new TicketSoldOutException("Sold out");
+    private void checkQuantity(TicketType ticketType) {
+        int stock = ticketStock.get(ticketType);
+        if (stock <= 0) {
+            throw new TicketSoldOutException(ticketType.name() + "is sold out");
         }
     }
 
-    private void checkHandedMoney(int handedMoney, int price) {
-        if (handedMoney < price) {
+    private void checkHandedMoney(int handedMoney, TicketType ticketType) {
+        if (handedMoney < ticketType.getPrice()) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
     }
 
-    private void addSalesProceeds(int price) {
+    private void addSalesProceeds(TicketType ticketType) {
         if (salesProceeds != null) {
-            salesProceeds = salesProceeds + price;
+            salesProceeds = salesProceeds + ticketType.getPrice();
         } else {
-            salesProceeds = price;
+            salesProceeds = ticketType.getPrice();
         }
     }
 
-    private void reduceQuantity(int salesQuantity) {
-        quantity = quantity - salesQuantity;
+    private void reduceQuantity(TicketType ticketType) {
+        int stock = ticketStock.get(ticketType);
+        ticketStock.replace(ticketType, stock - 1);
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -120,10 +131,9 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
-    public int getQuantity() {
-        return quantity;
+    public int getStock(TicketType ticketType) {
+        return ticketStock.get(ticketType);
     }
-
     public Integer getSalesProceeds() {
         return salesProceeds;
     }

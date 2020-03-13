@@ -19,6 +19,7 @@ import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
 import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
+import org.docksidestage.bizfw.basic.buyticket.TicketType;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -40,7 +41,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_howToUse_basic() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(7400);
-        int sea = booth.getQuantity();
+        int sea = booth.getStock(TicketType.ONE_DAY_TICKET);
         log(sea); // your answer? => 9
     }
 
@@ -74,7 +75,7 @@ public class Step05ClassTest extends PlainTestCase {
         } catch (TicketShortMoneyException continued) {
             log("Failed to buy one-day passport: money=" + handedMoney, continued);
         }
-        return booth.getQuantity();
+        return booth.getStock(TicketType.ONE_DAY_TICKET);
     }
 
     // ===================================================================================
@@ -111,7 +112,7 @@ public class Step05ClassTest extends PlainTestCase {
         Integer sea = booth.getSalesProceeds() + change;
         log(sea); // should be same as money
 
-        int quantity = booth.getQuantity();
+        int quantity = booth.getStock(TicketType.TWO_DAY_TICKET);
         log(quantity);
     }
 
@@ -122,7 +123,7 @@ public class Step05ClassTest extends PlainTestCase {
     public void test_class_letsFix_refactor_recycle() {
         TicketBooth booth = new TicketBooth();
         booth.buyOneDayPassport(10000);
-        log(booth.getQuantity(), booth.getSalesProceeds()); // should be same as before-fix
+        log(booth.getStock(TicketType.ONE_DAY_TICKET), booth.getSalesProceeds()); // should be same as before-fix
     }
 
     // ===================================================================================
@@ -220,15 +221,25 @@ public class Step05ClassTest extends PlainTestCase {
      */
     public void test_class_moreFix_yourRefactoring() {
         TicketBooth booth = new TicketBooth();
+        TicketBuyResult oneDayPassportResult = booth.buyOneDayPassport(22400);
+        Ticket oneDayPassport = oneDayPassportResult.getTicket();
+        log(oneDayPassport.getTicketType());
+        int change = oneDayPassportResult.getChange();
+        log(change); // 15000
+
         TicketBuyResult fourDayPassportResult = booth.buyFourDayPassport(22400);
         Ticket fourDayPassport = fourDayPassportResult.getTicket();
         log(fourDayPassport.getTicketType());
-        int change = fourDayPassportResult.getChange();
-        log(change);
+        int fourDayChange = fourDayPassportResult.getChange();
+        log(fourDayChange); // 0
         fourDayPassport.doInPark();
-        log(fourDayPassport.getRemainCheckIn());
+        log(fourDayPassport.getRemainCheckIn()); // 3
         fourDayPassport.leavePark();
         fourDayPassport.doInPark();
-        log(fourDayPassport.getRemainCheckIn());
+        log(fourDayPassport.getRemainCheckIn()); // 2
+
+        log(booth.getSalesProceeds()); // 29800
+        log(booth.getStock(TicketType.ONE_DAY_TICKET));
+        log(booth.getStock(TicketType.FOUR_DAY_TICKET));
     }
 }

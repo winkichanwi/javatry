@@ -23,16 +23,13 @@ public class OneDayTicket implements Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private final int displayPrice;
-    private final String ticketType;
+    private final TicketType ticketType = TicketType.ONE_DAY_TICKET;
     private boolean alreadyIn;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public OneDayTicket(int displayPrice) {
-        this.displayPrice = displayPrice;
-        this.ticketType = "1-Day";
+    public OneDayTicket() {
     }
 
     // ===================================================================================
@@ -40,7 +37,7 @@ public class OneDayTicket implements Ticket {
     //                                                                             =======
     public void doInPark() {
         if (alreadyIn) {
-            throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
+            throw new IllegalStateException("Already in park by this ticket: ticketType=" + ticketType.name());
         }
         alreadyIn = true;
     }
@@ -52,7 +49,7 @@ public class OneDayTicket implements Ticket {
     //                                                                            Accessor
     //                                                                            ========
     public int getDisplayPrice() {
-        return displayPrice;
+        return ticketType.getPrice();
     }
 
     public boolean isAlreadyIn() {
@@ -63,5 +60,7 @@ public class OneDayTicket implements Ticket {
         return alreadyIn ? 0 : 1;
     }
 
-    public String getTicketType() { return ticketType; }
+    public String getTicketType() {
+        return ticketType.name();
+    }
 }
