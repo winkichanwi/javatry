@@ -303,7 +303,9 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      * (FastRunnerではないAnimalクラスのコンクリートクラスをobjanimalパッケージに作成しましょう (実装はお好きなように))
      */
     public void test_objectOriented_polymorphism_makeConcrete() {
-        // your confirmation code here
+        Animal sheep = new Sheep();
+        log(sheep.soundLoudly());
+        log(sheep.getHitPoint());
     }
 
     /**
