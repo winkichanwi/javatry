@@ -291,7 +291,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      * (DogもFastRunnerインターフェースをimplementsしてみましょう (実装はCatと同じで))
      */
     public void test_objectOriented_polymorphism_interface_runnerImpl() {
-        // your confirmation code here
+        FastRunner dog = new Dog();
+        dog.run();
     }
 
     // ===================================================================================

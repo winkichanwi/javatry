@@ -15,11 +15,21 @@
  */
 package org.docksidestage.bizfw.basic.objanimal;
 
+import org.docksidestage.bizfw.basic.objanimal.runner.FastRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The object for dog(犬).
  * @author jflute
+ * @author winkichanwi
  */
-public class Dog extends Animal {
+public class Dog extends Animal implements FastRunner {
+
+    // ===================================================================================
+    //                                                                          Definition
+    //                                                                          ==========
+    private static final Logger logger = LoggerFactory.getLogger(Dog.class);
 
     // ===================================================================================
     //                                                                         Constructor
@@ -32,5 +42,14 @@ public class Dog extends Animal {
     //                                                                              ======
     protected String getBarkWord() {
         return "wan"; // bow? in English
+    }
+
+    // ===================================================================================
+    //                                                                               Run
+    //
+    //                                                                              ======
+    @Override
+    public void run() {
+        logger.debug("...Running now");
     }
 }
