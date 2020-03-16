@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * @author jflute
  * @author winkichanwi
  */
-public class Dog extends Animal implements FastRunner {
+public class Dog extends Animal implements FastRunner, Jumper{
 
     // ===================================================================================
     //                                                                          Definition
@@ -51,5 +51,15 @@ public class Dog extends Animal implements FastRunner {
     @Override
     public void run() {
         logger.debug("...Running now");
+    }
+
+    // ===================================================================================
+    //                                                                               Jump
+    //
+    //                                                                              ======
+    @Override
+    public void jump() {
+        logger.debug("...Jump up!");
+        downHitPoint();
     }
 }
