@@ -182,7 +182,7 @@ public class Step02IfForTest extends PlainTestCase {
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
         List<String> filteredList = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(); // NOTE(winkichanwi) forEach使う方mutableのStringBuilderにする
         stageList.forEach(stage -> {
             if (stage.startsWith("br")) {
                 return;
@@ -193,7 +193,7 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // should be same as before-fix
+        log(sea); // should be same as before-fix // NOTE(winkichanwi) hangar
     }
 
     /**
