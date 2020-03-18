@@ -74,7 +74,7 @@ public class Step01VariableTest extends PlainTestCase {
         BigDecimal land = new BigDecimal(415);
         sea = land;
         sea = land.add(new BigDecimal(1));
-        sea.add(new BigDecimal(1));
+        sea.add(new BigDecimal(1)); // NOTE(wingin.chan) immutableなので、戻り値は取れていない
         log(sea); // your answer? => 416
     }
 
@@ -144,7 +144,7 @@ public class Step01VariableTest extends PlainTestCase {
     //                                   -------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_mutable_methodcall() {
-        StringBuilder sea = new StringBuilder("harbor");
+        StringBuilder sea = new StringBuilder("harbor"); // NOTE(wingin.chan) StringBuilderはmutable
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
         log(sea); // your answer? => harbor416
