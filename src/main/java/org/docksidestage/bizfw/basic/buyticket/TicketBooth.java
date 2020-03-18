@@ -27,7 +27,7 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                          Definition
     //                                                                          ==========
-    private static final int ONE_DAY_MAX_QUANTITY = 10;
+    private static final int ONE_DAY_MAX_QUANTITY = 10; // NOTE(winkichanwi) 正解はないが、現実世界・業務の現実を考えてもらう
     private static final int TWO_DAY_MAX_QUANTITY = 10;
     private static final int FOUR_DAY_MAX_QUANTITY = 10;
     private static Map<TicketType, Integer> ticketStock = new HashMap<>();
@@ -68,6 +68,7 @@ public class TicketBooth {
         return result;
     }
 
+    // NOTE(winkichanwi) 今回はまるごと再利用にしているけど、場合によって、例えばbuyFiveDaPassportが処理の順番違うとかまるごとじゃない方がいいかもとか
     private TicketBuyResult buyPassport(int handedMoney, TicketType ticketType) {
         checkQuantity(ticketType);
         checkHandedMoney(handedMoney, ticketType);
