@@ -52,12 +52,14 @@ public class Step04MethodTest extends PlainTestCase {
         return replaced;
     }
 
+    // NOTE(winkichanwi) `supply` というメソッドは外部で何かしら取って返すメソッド
     private String supplySomething() {
         String sea = "over";
         log("in supply: {}", sea);
         return sea;
     }
 
+    // NOTE(winkichanwi) `consume` というメソッドは戻り値なくて、外部で何かしらやるメソッド
     private void consumeSomething(String sea) {
         log("in consume: {}", sea.replace("over", "mystic"));
     }
@@ -166,6 +168,7 @@ public class Step04MethodTest extends PlainTestCase {
         return text.replace("C", "B");
     }
 
+    // NOTE(winkichan) addPrefixというメソッドであれば、ちゃんと引数も名前が意味あるのをつけよう
     private String addPrefix(String prefix, String text) {
         return prefix + ":" + text;
     }
