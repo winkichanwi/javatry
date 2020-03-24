@@ -17,28 +17,9 @@ package org.docksidestage.javatry.basic.st6.os;
 
 /**
  * @author jflute
+ * @author winkichanwi
  */
-public class St6OperationSystem {
-
-    // ===================================================================================
-    //                                                                          Definition
-    //                                                                          ==========
-    private static final String OS_TYPE_MAC = "Mac";
-    private static final String OS_TYPE_WINDOWS = "Windows";
-    private static final String OS_TYPE_OLD_WINDOWS = "OldWindows";
-
-    // ===================================================================================
-    //                                                                           Attribute
-    //                                                                           =========
-    private final String loginId;
-    private String osType;
-
-    // ===================================================================================
-    //                                                                         Constructor
-    //                                                                         ===========
-    public St6OperationSystem(String loginId) {
-        this.loginId = loginId;
-    }
+public abstract class St6OperationSystem {
 
     // ===================================================================================
     //                                                                      User Directory
@@ -50,27 +31,7 @@ public class St6OperationSystem {
         return resourcePath.replace("/", fileSeparator);
     }
 
-    protected String getFileSeparator() {
-        if (OS_TYPE_MAC.equalsIgnoreCase(osType)) {
-            return "/";
-        } else if (OS_TYPE_WINDOWS.equalsIgnoreCase(osType)) {
-            return "\\";
-        } else if (OS_TYPE_OLD_WINDOWS.equalsIgnoreCase(osType)) {
-            return "\\";
-        } else {
-            throw new IllegalStateException("Unknown osType: " + osType);
-        }
-    }
+    protected abstract String getFileSeparator();
 
-    protected String getUserDirectory() {
-        if (OS_TYPE_MAC.equalsIgnoreCase(osType)) {
-            return "/Users/" + loginId;
-        } else if (OS_TYPE_WINDOWS.equalsIgnoreCase(osType)) {
-            return "/Users/" + loginId;
-        } else if (OS_TYPE_OLD_WINDOWS.equalsIgnoreCase(osType)) {
-            return "/Documents and Settigs/" + loginId;
-        } else {
-            throw new IllegalStateException("Unknown osType: " + osType);
-        }
-    }
+    protected abstract String getUserDirectory();
 }
