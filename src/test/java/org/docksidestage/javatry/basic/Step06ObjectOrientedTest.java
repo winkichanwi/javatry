@@ -349,6 +349,8 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
     public void test_objectOriented_writing_specialization_extractToConcrete() {
         // your confirmation code here
     }
+    // NOTE(winkichanwi) abstract classで実装しちゃうと、汎用性がよくない、わりとたまたまもある
+    // NOTE(winkichanwi) constructorはabstract classで実装してしまって、実装クラスでsuper(param);でもいい
 
     // ===================================================================================
     //                                                                           Good Luck
