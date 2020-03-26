@@ -30,6 +30,7 @@ import org.docksidestage.unit.PlainTestCase;
  * @author winkichanwi
  */
 public class Step07ExceptionTest extends PlainTestCase {
+    // NOTE(winkichanwi) Exceptions vs Error なぜエラー継承しないのは、例外というのはminorのだめの状態で、システムとして必ずエラーとは言わない。Errorは必ずエラーです。
 
     // ===================================================================================
     //                                                                             Message
@@ -196,6 +197,7 @@ public class Step07ExceptionTest extends PlainTestCase {
      * (やばい例外ハンドリングがあるので修正しましょう (例外クラスを修正してOK))
      */
     public void test_exception_writing_constructorChallenge() {
+        // NOTE(winkichanwi) nested exception をthrowする時気をつけて！
         try {
             helpSurprisedYabaiCatch();
         } catch (St7ConstructorChallengeException e) {
