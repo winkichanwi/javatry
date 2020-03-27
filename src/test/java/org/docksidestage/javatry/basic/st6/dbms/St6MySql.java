@@ -18,7 +18,7 @@ package org.docksidestage.javatry.basic.st6.dbms;
 /**
  * @author jflute
  */
-public class St6MySql extends St6AbstractSql{
+public class St6MySql extends St6DBMS {
 
     @Override
     protected String doBuildPagingQuery(int offset, int pageSize) {

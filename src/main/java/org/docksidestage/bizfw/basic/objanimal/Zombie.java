@@ -37,6 +37,11 @@ public class Zombie extends Animal {
         return -1; // magic number for infinity hit point
     }
 
+    @Override
+    protected BarkProcess getBarkProcess() {
+        return new ZombieBarkProcess(this);
+    }
+
     public static class ZombieDiary {
 
         private int breatheInCount;
@@ -53,12 +58,6 @@ public class Zombie extends Animal {
     // ===================================================================================
     //                                                                               Bark
     //                                                                              ======
-    @Override
-    protected void breatheIn() {
-        super.breatheIn();
-        zombieDiary.countBreatheIn();
-    }
-
     @Override
     protected String getBarkWord() {
         return "uooo"; // what in English?
