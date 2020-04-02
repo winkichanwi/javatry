@@ -48,6 +48,7 @@ public abstract class Animal implements Loudable {
         return 10; // as default
     }
 
+    // NOTE(winkichanwi) createBarkProcess がいいかも
     protected BarkProcess getBarkProcess() {
         return new BarkProcess(this);
     }

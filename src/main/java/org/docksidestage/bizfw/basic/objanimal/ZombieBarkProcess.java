@@ -8,7 +8,7 @@ public class ZombieBarkProcess extends BarkProcess {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private Zombie zombie;
+    private final Zombie zombie;
 
     // ===================================================================================
     //                                                                         Constructor
