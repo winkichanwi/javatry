@@ -392,5 +392,6 @@ public class Step06ObjectOrientedTest extends PlainTestCase {
      */
     public void test_objectOriented_zoo() {
         // do nothing here
+        // NOTE(winkichanwi) 正解はないが、たとえば犬のZombieがある場合Zombieは状態になる
     }
 }

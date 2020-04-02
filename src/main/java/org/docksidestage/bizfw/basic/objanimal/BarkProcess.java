@@ -37,7 +37,7 @@ public class BarkProcess {
         logger.debug("...Breathing in"); // dummy implementation
         animal.downHitPoint();
     }
-    
+
     protected void prepareAbdominalMuscle() {
         logger.debug("...Using my abdominal muscle"); // dummy implementation
         animal.downHitPoint();
