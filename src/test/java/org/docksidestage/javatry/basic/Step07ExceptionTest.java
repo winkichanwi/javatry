@@ -174,9 +174,9 @@ public class Step07ExceptionTest extends PlainTestCase {
             // _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
             // What happens? Write situation and cause here. (何が起きた？状況と原因をここに書いてみましょう)
             // - - - - - - - - - -
-            //
-            //
-            //
+            // SupercarManufacturerが"piari"のcatalogKeyでSupercarEasyCatalogを探してsteeringWheelIdが3と取得していて、
+            // 3のSteeringWheelテキストが"\\(^_^)/"になっていて
+            // SpecialScrewManufacturerが"\\(^_^)/"でmakeSpecialScrewするときに、エラーをthrowすることになっています
             // _/_/_/_/_/_/_/_/_/_/
         }
     }
