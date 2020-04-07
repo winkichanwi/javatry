@@ -31,8 +31,12 @@ public class SupercarClient {
     public void buySupercar() {
         SupercarDealer dealer = createDealer();
         String clientRequirement = "steering wheel is like sea";
-        Supercar orderedCustomCar = dealer.orderSupercar(clientRequirement);
-        myCarList.add(orderedCustomCar);
+        try {
+            Supercar orderedCustomCar = dealer.orderSupercar(clientRequirement);
+            myCarList.add(orderedCustomCar);
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("Failed in ordering Supercar, clientRequirement = " + clientRequirement, ex);
+        }
     }
 
     protected SupercarDealer createDealer() {

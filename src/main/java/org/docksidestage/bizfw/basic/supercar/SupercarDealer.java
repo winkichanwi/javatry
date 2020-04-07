@@ -24,15 +24,23 @@ import org.docksidestage.bizfw.basic.supercar.SupercarManufacturer.Supercar;
 public class SupercarDealer {
 
     public Supercar orderSupercar(String clientRequirement) {
+        String catalogKey;
         SupercarManufacturer manufacturer = createSupercarManufacturer();
+
         if (clientRequirement.contains("steering wheel is like sea")) {
-            return manufacturer.makeSupercar("piari");
+            catalogKey = "piari";
         } else if (clientRequirement.contains("steering wheel is useful on land")) {
-            return manufacturer.makeSupercar("land");
+            catalogKey = "land";
         } else if (clientRequirement.contains("steering wheel has many shop")) {
-            return manufacturer.makeSupercar("piari");
+            catalogKey = "piari";
         } else {
             throw new IllegalStateException("Cannot understand the client requirement: " + clientRequirement);
+        }
+
+        try {
+            return manufacturer.makeSupercar(catalogKey);
+        } catch (RuntimeException ex) {
+            throw new RuntimeException("Failed in making Supercar, catalogKey = " + catalogKey, ex);
         }
     }
 
