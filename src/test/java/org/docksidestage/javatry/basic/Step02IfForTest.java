@@ -188,11 +188,11 @@ public class Step02IfForTest extends PlainTestCase {
                 return;
             }
             filteredList.add(0, stage);
-            if (stage.contains("ga")) {
+            if (stage.contains("ga") && sb.length() == 0) {
                 sb.append(filteredList.get(0));
             }
         });
-        String sea = sb.toString();
+        String sea = sb.length() > 0 ? sb.toString() : filteredList.get(0);
         log(sea); // should be same as before-fix // NOTE(winkichanwi) hangar
     }
 
