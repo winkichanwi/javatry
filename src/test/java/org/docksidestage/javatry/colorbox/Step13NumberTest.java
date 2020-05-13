@@ -53,6 +53,15 @@ public class Step13NumberTest extends PlainTestCase {
      * (カラーボックの中に入っている数値で、0から54までの値は何個ある？)
      */
     public void test_countZeroToFiftyFour_Number() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        long countNumer = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .map(boxSpace -> boxSpace.getContent())
+                .filter(content -> content instanceof Number)
+                .map(content -> (Number) content)
+                .filter(number -> number.doubleValue() >= 0 && number.doubleValue() <= 54)
+                .count();
+        log("No of integer-type values in color-boxes between 0 and 54: " + countNumer);
     }
 
     /**
