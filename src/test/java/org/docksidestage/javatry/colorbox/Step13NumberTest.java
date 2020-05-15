@@ -15,7 +15,11 @@
  */
 package org.docksidestage.javatry.colorbox;
 
+import java.math.BigDecimal;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.docksidestage.bizfw.colorbox.ColorBox;
 import org.docksidestage.bizfw.colorbox.yours.YourPrivateRoom;
@@ -69,6 +73,12 @@ public class Step13NumberTest extends PlainTestCase {
      * (カラーボックスの中で、Integer型の Content を持っていてBoxSizeの幅が一番大きいカラーボックスの色は？)
      */
     public void test_findColorBigWidthHasInteger() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        Optional<String> colorOpt = colorBoxList.stream()
+                .filter(colorBox -> colorBox.getSpaceList().stream().anyMatch(space -> space.getContent() instanceof Integer))
+                .max(Comparator.comparingInt(colorBox -> colorBox.getSize().getWidth()))
+                .map(colorBox -> colorBox.getColor().getColorName());
+        log(colorOpt.orElse("No target colorbox found"));
     }
 
     /**
@@ -76,6 +86,19 @@ public class Step13NumberTest extends PlainTestCase {
      * (カラーボックスの中に入ってる List の中の BigDecimal を全て足し合わせると？)
      */
     public void test_sumBigDecimalInList() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        BigDecimal sum = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof List)
+                .map(boxSpace -> (List<?>) boxSpace.getContent())
+                .flatMap(List::stream)
+                .filter(content -> content instanceof BigDecimal)
+                .map(content -> (BigDecimal) content)
+                .reduce(BigDecimal.ZERO, (BigDecimal acc, BigDecimal bd) -> {
+                    return acc.add(bd);
+                });
+
+        log(sum);
     }
 
     // ===================================================================================
@@ -86,10 +109,19 @@ public class Step13NumberTest extends PlainTestCase {
      * (カラーボックスに入ってる、valueが数値のみの Map の中で一番大きいvalueのkeyは？)
      */
     public void test_findMaxMapNumberValue() {
+//        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+//        colorBoxList.stream()
+//                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+//                .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
+//                .map(boxSpace -> (Map<?, ?>) boxSpace.getContent())
+//                .flatMap(content -> content.entrySet().stream())
+//                .filter(set -> set.getValue() instanceof Number)
+//                .max(Comparator.comparingInt(set -> set.getValue()));
+
     }
 
     /**
-     * What is total of number or number-character values in Map in purple color-box? <br> 
+     * What is total of number or number-character values in Map in purple color-box? <br>
      * (purpleのカラーボックスに入ってる Map の中のvalueの数値・数字の合計は？)
      */
     public void test_sumMapNumberValue() {
