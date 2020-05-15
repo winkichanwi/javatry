@@ -109,15 +109,16 @@ public class Step13NumberTest extends PlainTestCase {
      * (カラーボックスに入ってる、valueが数値のみの Map の中で一番大きいvalueのkeyは？)
      */
     public void test_findMaxMapNumberValue() {
-//        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
-//        colorBoxList.stream()
-//                .flatMap(colorBox -> colorBox.getSpaceList().stream())
-//                .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
-//                .map(boxSpace -> (Map<?, ?>) boxSpace.getContent())
-//                .flatMap(content -> content.entrySet().stream())
-//                .filter(set -> set.getValue() instanceof Number)
-//                .max(Comparator.comparingInt(set -> set.getValue()));
-
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        Optional<Object> maxKey = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
+                .map(boxSpace -> (Map<?, ?>) boxSpace.getContent())
+                .flatMap(content -> content.entrySet().stream())
+                .filter(set -> set.getValue() instanceof Number)
+                .max(Comparator.comparingDouble(set -> ((Number) set.getValue()).doubleValue()))
+                .map(set -> set.getKey());
+        log(maxKey.orElse("No target object found"));
     }
 
     /**
@@ -125,5 +126,33 @@ public class Step13NumberTest extends PlainTestCase {
      * (purpleのカラーボックスに入ってる Map の中のvalueの数値・数字の合計は？)
      */
     public void test_sumMapNumberValue() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+
+        Number sumNumber = colorBoxList.stream()
+                .filter(colorBox -> colorBox.getColor().getColorName().equals("purple"))
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
+                .map(boxSpace -> (Map<?, ?>) boxSpace.getContent())
+                .flatMap(content -> content.entrySet().stream())
+                .filter(set -> set.getValue() instanceof Number)
+                .map(set -> (Number) set.getValue())
+                .reduce(0.0, (Number acc, Number value) -> {return acc.doubleValue() + value.doubleValue();});
+        Number sumString = colorBoxList.stream()
+                .filter(colorBox -> colorBox.getColor().getColorName().equals("purple"))
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
+                .map(boxSpace -> (Map<?, ?>) boxSpace.getContent())
+                .flatMap(content -> content.entrySet().stream())
+                .filter(set -> set.getValue() instanceof String)
+                .map(set -> (String) set.getValue())
+                .map(string -> {
+                    try {
+                        return Double.parseDouble(string);
+                    } catch (NumberFormatException e) {
+                        return 0.0;
+                    }
+                })
+                .reduce(0.0, (Double acc, Double value) -> {return acc + value;});
+        log(sumNumber.doubleValue() + sumString.doubleValue());
     }
 }
