@@ -18,7 +18,12 @@ package org.docksidestage.javatry.colorbox;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.time.temporal.Temporal;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.docksidestage.bizfw.colorbox.ColorBox;
@@ -65,6 +70,30 @@ public class Step14DateTest extends PlainTestCase {
      * (yellowのカラーボックスに入っているSetの中のスラッシュ区切り (e.g. 2019/04/24) の日付文字列をLocalDateに変換してtoString()したら？)
      */
     public void test_parseDate() {
+        DateTimeFormatter slashDateFommatter = DateTimeFormatter.ofPattern("uuuu/MM/dd");
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        List<String> dateList = colorBoxList.stream()
+                .filter(colorBox -> colorBox.getColor().getColorName().equals("yellow"))
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Set<?>)
+                .map(boxSpace -> (Set<?>) boxSpace.getContent())
+                .flatMap(set -> Arrays.stream(set.toArray()))
+                .filter(value -> value instanceof String)
+                .map(value -> String.valueOf(value))
+                .filter(text -> {
+                    try {
+                        LocalDate.parse(text, slashDateFommatter);
+                        return true;
+                    } catch (Exception ex) {
+                        return false;
+                    }
+                })
+                .map(text -> LocalDate.parse(text, slashDateFommatter))
+                .map(localDate -> localDate.toString())
+                .collect(Collectors.toList());
+
+        log(dateList);
+
     }
 
     /**
@@ -72,6 +101,20 @@ public class Step14DateTest extends PlainTestCase {
      * (カラーボックスに入っている日付の月を全て足したら？)
      */
     public void test_sumMonth() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        int localDateMonthSum = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof LocalDate)
+                .map(boxSpace -> (LocalDate) boxSpace.getContent())
+                .map(localDate -> localDate.getMonth().getValue())
+                .reduce(0, (acc, value) -> acc + value);
+        int localDateTimeMonthSum = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof LocalDateTime)
+                .map(boxSpace -> (LocalDateTime) boxSpace.getContent())
+                .map(localDateTime -> localDateTime.getMonth().getValue())
+                .reduce(0, (acc, value) -> acc + value);
+        log(localDateMonthSum + localDateTimeMonthSum);
     }
 
     /**
@@ -79,6 +122,20 @@ public class Step14DateTest extends PlainTestCase {
      * (カラーボックスに入っている二番目に見つかる日付に3日進めると何曜日？)
      */
     public void test_plusDays_weekOfDay() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        List<Temporal> dateList = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Temporal)
+                .map(boxSpace -> (Temporal) boxSpace.getContent())
+                .collect(Collectors.toList());
+
+        if (dateList.size() >= 2) {
+            LocalDate targetDate = LocalDate.from(dateList.get(1));
+            String result = targetDate.plusDays(3).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.JAPAN);
+            log(result);
+        } else {
+            log("target not found");
+        }
     }
 
     // ===================================================================================
