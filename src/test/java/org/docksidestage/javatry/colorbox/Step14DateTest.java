@@ -17,6 +17,7 @@ package org.docksidestage.javatry.colorbox;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.time.temporal.Temporal;
@@ -102,19 +103,14 @@ public class Step14DateTest extends PlainTestCase {
      */
     public void test_sumMonth() {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
-        int localDateMonthSum = colorBoxList.stream()
+        int monthSum = colorBoxList.stream()
                 .flatMap(colorBox -> colorBox.getSpaceList().stream())
-                .filter(boxSpace -> boxSpace.getContent() instanceof LocalDate)
-                .map(boxSpace -> (LocalDate) boxSpace.getContent())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Temporal)
+                .map(boxSpace -> (Temporal) boxSpace.getContent())
+                .map(temporal -> LocalDate.from(temporal))
                 .map(localDate -> localDate.getMonth().getValue())
                 .reduce(0, (acc, value) -> acc + value);
-        int localDateTimeMonthSum = colorBoxList.stream()
-                .flatMap(colorBox -> colorBox.getSpaceList().stream())
-                .filter(boxSpace -> boxSpace.getContent() instanceof LocalDateTime)
-                .map(boxSpace -> (LocalDateTime) boxSpace.getContent())
-                .map(localDateTime -> localDateTime.getMonth().getValue())
-                .reduce(0, (acc, value) -> acc + value);
-        log(localDateMonthSum + localDateTimeMonthSum);
+        log(monthSum);
     }
 
     /**
@@ -128,7 +124,6 @@ public class Step14DateTest extends PlainTestCase {
                 .filter(boxSpace -> boxSpace.getContent() instanceof Temporal)
                 .map(boxSpace -> (Temporal) boxSpace.getContent())
                 .collect(Collectors.toList());
-
         if (dateList.size() >= 2) {
             LocalDate targetDate = LocalDate.from(dateList.get(1));
             String result = targetDate.plusDays(3).getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.JAPAN);
@@ -146,6 +141,19 @@ public class Step14DateTest extends PlainTestCase {
      * (yellowのカラーボックスに入っている二つの日付は何日離れている？)
      */
     public void test_diffDay() {
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        List<LocalDate> dateList = colorBoxList.stream()
+                .filter(colorBox -> colorBox.getColor().getColorName().equals("yellow"))
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof Temporal)
+                .map(boxSpace -> (Temporal) boxSpace.getContent())
+                .map(temporal -> LocalDate.from(temporal))
+                .collect(Collectors.toList());
+        if (dateList.size() >= 2) {
+            log(Period.between(dateList.get(0), dateList.get(1)).getDays());
+        } else {
+            log("target not found");
+        }
     }
 
     /**
