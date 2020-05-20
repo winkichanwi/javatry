@@ -15,6 +15,14 @@
  */
 package org.docksidestage.javatry.colorbox;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.docksidestage.bizfw.colorbox.ColorBox;
+import org.docksidestage.bizfw.colorbox.yours.YourPrivateRoom;
 import org.docksidestage.unit.PlainTestCase;
 
 /**
@@ -33,6 +41,23 @@ public class Step14DateTest extends PlainTestCase {
      * (カラーボックスに入っている日付をプラス記号区切り (e.g. 2019+04+24) のフォーマットしたら？)
      */
     public void test_formatDate() {
+        DateTimeFormatter plusDateFommatter = DateTimeFormatter.ofPattern("uuuu+MM+dd");
+        List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
+        List<String> dateList = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof LocalDate)
+                .map(boxSpace -> (LocalDate) boxSpace.getContent())
+                .map(localDate -> localDate.format(plusDateFommatter))
+                .collect(Collectors.toList());
+        List<String> localDateTimeList = colorBoxList.stream()
+                .flatMap(colorBox -> colorBox.getSpaceList().stream())
+                .filter(boxSpace -> boxSpace.getContent() instanceof LocalDateTime)
+                .map(boxSpace -> (LocalDateTime) boxSpace.getContent())
+                .map(localDateTime -> localDateTime.format(plusDateFommatter))
+                .collect(Collectors.toList());
+        dateList.addAll(localDateTimeList);
+
+        log(dateList.toString());
     }
 
     /**
