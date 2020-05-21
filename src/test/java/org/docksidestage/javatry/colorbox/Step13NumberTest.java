@@ -128,7 +128,7 @@ public class Step13NumberTest extends PlainTestCase {
     public void test_sumMapNumberValue() {
         List<ColorBox> colorBoxList = new YourPrivateRoom().getColorBoxList();
 
-        Number sumNumber = colorBoxList.stream()
+        double sumNumber = colorBoxList.stream()
                 .filter(colorBox -> colorBox.getColor().getColorName().equals("purple"))
                 .flatMap(colorBox -> colorBox.getSpaceList().stream())
                 .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
@@ -136,8 +136,9 @@ public class Step13NumberTest extends PlainTestCase {
                 .flatMap(content -> content.entrySet().stream())
                 .filter(set -> set.getValue() instanceof Number)
                 .map(set -> (Number) set.getValue())
-                .reduce(0.0, (Number acc, Number value) -> {return acc.doubleValue() + value.doubleValue();});
-        Number sumString = colorBoxList.stream()
+                .mapToDouble(number -> number.doubleValue())
+                .sum();
+        double sumString = colorBoxList.stream()
                 .filter(colorBox -> colorBox.getColor().getColorName().equals("purple"))
                 .flatMap(colorBox -> colorBox.getSpaceList().stream())
                 .filter(boxSpace -> boxSpace.getContent() instanceof Map<?, ?>)
@@ -145,14 +146,14 @@ public class Step13NumberTest extends PlainTestCase {
                 .flatMap(content -> content.entrySet().stream())
                 .filter(set -> set.getValue() instanceof String)
                 .map(set -> (String) set.getValue())
-                .map(string -> {
+                .mapToDouble(string -> {
                     try {
                         return Double.parseDouble(string);
                     } catch (NumberFormatException e) {
                         return 0.0;
                     }
                 })
-                .reduce(0.0, (Double acc, Double value) -> {return acc + value;});
-        log(sumNumber.doubleValue() + sumString.doubleValue());
+                .sum();
+        log(sumNumber + sumString);
     }
 }
